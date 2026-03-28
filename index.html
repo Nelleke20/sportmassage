@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sportmassage – Ellen Benningen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand:    #f4ece2;
+    --warm:    #edddd0;
+    --cream:   #faf6f1;
+    --brown:   #8b6040;
+    --dark:    #231508;
+    --accent:  #b07a52;
+    --soft:    #c9a882;
+    --muted:   #7a5c45;
+    --rule:    rgba(139,96,64,0.18);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--sand);
+    color: var(--dark);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 128px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 32px 64px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 80%, rgba(176,122,82,0.13) 0%, transparent 70%),
+      radial-gradient(ellipse 90% 40% at 20% 20%, rgba(237,221,208,0.6) 0%, transparent 60%),
+      var(--sand);
+  }
+
+  /* decorative arcs */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 260px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+
+  .hero-overline {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: riseIn 0.7s 0.1s ease forwards;
+  }
+
+  .hero-rule {
+    width: 48px;
+    height: 1px;
+    background: var(--soft);
+    margin: 0 auto 28px;
+    opacity: 0;
+    animation: riseIn 0.7s 0.05s ease forwards;
+  }
+
+  .hero-h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(72px, 12vw, 130px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 0.88;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: riseIn 0.9s 0.2s ease forwards;
+  }
+
+  .hero-h1 span {
+    display: block;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--brown);
+    font-size: 0.42em;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-top: 18px;
+  }
+
+  .hero-desc {
+    margin-top: 36px;
+    max-width: 420px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    opacity: 0;
+    animation: riseIn 0.7s 0.4s ease forwards;
+  }
+
+  .hero-cta {
+    margin-top: 44px;
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: riseIn 0.7s 0.5s ease forwards;
+  }
+
+  .btn {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 13px 30px;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-block;
+  }
+
+  .btn-dark {
+    background: var(--dark);
+    color: var(--cream);
+  }
+  .btn-dark:hover { background: var(--brown); transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    border-color: rgba(139,96,64,0.35);
+  }
+  .btn-outline:hover { background: var(--warm); color: var(--dark); transform: translateY(-2px); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: riseIn 1s 0.9s ease forwards;
+    color: var(--soft);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 36px;
+    background: linear-gradient(to bottom, transparent, var(--soft));
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── SECTION BASE ── */
+  section { position: relative; }
+
+  .section-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 96px 40px;
+  }
+
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--soft);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--dark);
+    line-height: 1.1;
+    margin-bottom: 48px;
+  }
+
+  /* ── TARIEVEN ── */
+  .tarieven-section {
+    background: var(--cream);
+  }
+
+  .tarieven-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 32px;
+  }
+
+  .tarief-card {
+    background: var(--cream);
+    padding: 44px 40px;
+    position: relative;
+    transition: background 0.3s ease;
+  }
+  .tarief-card:hover { background: var(--warm); }
+
+  .tarief-nr {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-style: italic;
+    color: var(--soft);
+    margin-bottom: 20px;
+  }
+
+  .tarief-duur {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .tarief-type {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--dark);
+    margin-bottom: 24px;
+  }
+
+  .tarief-divider {
+    width: 32px;
+    height: 1px;
+    background: var(--soft);
+    margin-bottom: 24px;
+  }
+
+  .tarief-prijs {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 300;
+    color: var(--brown);
+    line-height: 1;
+  }
+  .tarief-prijs sup { font-size: 22px; vertical-align: top; margin-top: 8px; display: inline-block; }
+  .tarief-prijs sub { font-size: 16px; color: var(--muted); vertical-align: bottom; margin-bottom: 8px; }
+
+  /* ── LOCATIE ── */
+  .locatie-section {
+    background: var(--sand);
+  }
+
+  .locatie-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .locatie-item {
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .locatie-icon-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .locatie-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .locatie-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--dark);
+  }
+
+  .locatie-p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  .locatie-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--brown);
+    background: rgba(139,96,64,0.09);
+    padding: 7px 14px;
+    border-radius: 1px;
+  }
+  .locatie-note::before {
+    content: '↳';
+    font-size: 14px;
+  }
+
+  /* ── OVER ELLEN ── */
+  .over-section {
+    background: var(--dark);
+    overflow: hidden;
+  }
+
+  .over-section .section-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .over-section .eyebrow { color: var(--soft); }
+  .over-section .eyebrow::before { background: var(--accent); }
+
+  .over-section .section-title {
+    color: var(--sand);
+    margin-bottom: 24px;
+  }
+
+  .over-quote {
+    font-size: 15px;
+    color: rgba(244,236,226,0.65);
+    line-height: 1.8;
+    font-style: italic;
+    position: relative;
+    padding-left: 24px;
+  }
+  .over-quote::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 1px;
+    background: var(--accent);
+  }
+
+  .over-img-wrap {
+    position: relative;
+  }
+
+  .over-img-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: rgba(176,122,82,0.15);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .over-img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(15%) sepia(10%);
+    display: block;
+  }
+
+  .over-frame-deco {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(176,122,82,0.3);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    background: var(--cream);
+  }
+
+  .contact-section .section-inner {
+    text-align: center;
+    max-width: 640px;
+  }
+
+  .contact-section .section-title { margin-bottom: 16px; }
+
+  .contact-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 52px;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contact-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    text-align: left;
+    margin-bottom: 40px;
+  }
+
+  .contact-card {
+    background: var(--cream);
+    padding: 32px 32px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: background 0.25s ease;
+  }
+  .contact-card:hover { background: var(--warm); }
+
+  .contact-card-label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 10px;
+  }
+
+  .contact-card-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--dark);
+  }
+
+  .contact-card-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px 40px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: var(--sand);
+  }
+
+  footer span { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.08); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    .section-inner { padding: 72px 28px; }
+    .tarieven-grid { grid-template-columns: 1fr; }
+    .locatie-grid { grid-template-columns: 1fr; gap: 36px; }
+    .over-section .section-inner { grid-template-columns: 1fr; gap: 48px; }
+    .over-img-wrap { order: -1; }
+    .over-img-frame { aspect-ratio: 4/3; }
+    .contact-cards { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-rule"></div>
+  <p class="hero-overline">Ellen Benningen · Fysiotherapeut</p>
+  <h1 class="hero-h1">
+    Sport&shy;massage
+    <span>Spierherstel</span>
+  </h1>
+  <p class="hero-desc">
+    Spierklachten door werk of sport? Behoefte aan een goede massage, zonder direct naar de fysiotherapeut te hoeven? Ik help u graag verder.
+  </p>
+  <div class="hero-cta">
+    <a href="#contact" class="btn btn-dark">Afspraak maken</a>
+    <a href="#tarieven" class="btn btn-outline">Bekijk tarieven</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- TARIEVEN -->
+<section class="tarieven-section" id="tarieven">
+  <div class="section-inner">
+    <p class="eyebrow">Tarieven</p>
+    <h2 class="section-title">Wat kost een behandeling?</h2>
+    <div class="tarieven-grid">
+      <div class="tarief-card">
+        <p class="tarief-nr">01</p>
+        <p class="tarief-duur">50 minuten</p>
+        <p class="tarief-type">Full body massage</p>
+        <div class="tarief-divider"></div>
+        <div class="tarief-prijs"><sup>€</sup>50<sub>,-</sub></div>
+      </div>
+      <div class="tarief-card">
+        <p class="tarief-nr">02</p>
+        <p class="tarief-duur">30 minuten</p>
+        <p class="tarief-type">Deelbehandeling</p>
+        <div class="tarief-divider"></div>
+        <div class="tarief-prijs"><sup>€</sup>35<sub>,-</sub></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIE -->
+<section class="locatie-section" id="locatie">
+  <div class="section-inner">
+    <p class="eyebrow">Locatie</p>
+    <h2 class="section-title">Waar vindt de behandeling<br>plaats?</h2>
+    <div class="locatie-grid">
+      <div class="locatie-item">
+        <div class="locatie-icon-row">
+          <div class="locatie-dot"></div>
+          <h3 class="locatie-h">Bij mij thuis · Woerden</h3>
+        </div>
+        <p class="locatie-p">Ik heb een eigen kamertje ingericht speciaal voor massagebehandelingen — rustig, warm en professioneel ingericht.</p>
+      </div>
+      <div class="locatie-item">
+        <div class="locatie-icon-row">
+          <div class="locatie-dot"></div>
+          <h3 class="locatie-h">Bij u op locatie</h3>
+        </div>
+        <p class="locatie-p">Ik kom ook bij u thuis, in en rondom Woerden. Geen verplaatsing nodig.</p>
+        <div class="locatie-note">Buiten Woerden: + €5,- reiskosten</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVER ELLEN -->
+<section class="over-section" id="over">
+  <div class="section-inner">
+    <div>
+      <p class="eyebrow">Over mij</p>
+      <h2 class="section-title">Ellen Benningen</h2>
+      <p class="over-quote">
+        "In mijn werk als fysiotherapeut kom ik geregeld spierklachten tegen die werk- of sportgerelateerd zijn. Heeft u klachten, maar lijkt fysiotherapie nog niet noodzakelijk of heeft u behoefte aan een sportmassage? Dan help ik u graag verder."
+      </p>
+    </div>
+    <div class="over-img-wrap">
+      <div class="over-img-frame">
+        <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=600&q=80" alt="Ellen Benningen">
+      </div>
+      <div class="over-frame-deco"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-inner">
+    <p class="eyebrow" style="justify-content:center">Contact</p>
+    <h2 class="section-title">Afspraak maken<br><em style="color:var(--accent)">of een vraag?</em></h2>
+    <p class="contact-sub">Neem gerust contact op via e-mail of WhatsApp. Ik reageer zo snel mogelijk.</p>
+    <div class="contact-cards">
+      <a href="mailto:[emailadres]" class="contact-card">
+        <svg class="contact-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="M2 7l10 7 10-7"/>
+        </svg>
+        <p class="contact-card-label">E-mail</p>
+        <p class="contact-card-val">[emailadres]</p>
+      </a>
+      <a href="https://wa.me/[telefoonnummer]" target="_blank" class="contact-card">
+        <svg class="contact-card-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <p class="contact-card-label">WhatsApp</p>
+        <p class="contact-card-val">[telefoonnummer]</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Ellen Benningen</span>
+  <p>Sportmassage · Woerden · 2025</p>
+</footer>
+
+</body>
+</html>
